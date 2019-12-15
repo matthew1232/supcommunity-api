@@ -2,7 +2,7 @@
 ![version](https://img.shields.io/npm/v/supcommunity-api "Version")
 ![npm](https://img.shields.io/npm/dt/supcommunity.svg "Total Downloads")
 
-A lightweight module allowing you to scrape the [https://www.supremecommunity.com](Supcommunity) website with NodeJS. 
+A lightweight module allowing you to scrape the [Supcommunity](https://www.supremecommunity.com) website with NodeJS. 
 
 ------
 

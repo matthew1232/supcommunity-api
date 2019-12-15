@@ -131,7 +131,7 @@ var SupcommunityScraper = function () {
                 var imageURL = new URL(imagePath, url).href;
                 var positiveVotes = Number($(element).find('.progress-bar-success.droplist-vote-bar').text());
                 var negativeVotes = Number($(element).find('.progress-bar-danger.droplist-vote-bar').text());
-                var votePercentage = Math.round(100 * (positiveVotes / negativeVotes));
+                var votePercentage = Math.round(100 * (positiveVotes / (positiveVotes + negativeVotes)));
                 var description = $(element).find('.prefill-img').attr('alt').split('- ')[1];
                 droplistArray.push({
                   name: name,

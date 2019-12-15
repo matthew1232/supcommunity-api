@@ -1,13 +1,13 @@
 {
   "name": "supcommunity-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "author": "matthew mulfinger",
   "license": "MIT",
   "description": "Lightweight Supcommunity scraper in NodeJS",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/matthew1232/supcommunity-api"
   },
   "scripts": {
     "build": "babel --no-comments -d dist src/"

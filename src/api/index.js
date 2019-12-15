@@ -74,7 +74,7 @@ class SupcommunityScraper {
             const imageURL = new URL(imagePath, url).href;
             const positiveVotes = Number($(element).find('.progress-bar-success.droplist-vote-bar').text());
             const negativeVotes = Number($(element).find('.progress-bar-danger.droplist-vote-bar').text())
-            const votePercentage = Math.round(100 * (positiveVotes / negativeVotes));
+            const votePercentage = Math.round(100 * (positiveVotes / (positiveVotes + negativeVotes)));
             const description = $(element).find('.prefill-img').attr('alt').split('- ')[1];
 
             droplistArray.push({
