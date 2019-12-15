@@ -17,18 +17,60 @@ yarn add supcommunity-api
 
 ------
 
-## Usage
-Supcommunity-api is an es6 based library, so if you use the es5 `require` to import the module, you will need to use `.default`.
+## Notes
+supcommunity-api is an es6 based library, so if you use the es5 `require` to import the module, you will need to use `.default`.
 ```js
 const SupcommunityScraper = require('supcommunity-api').default;
 //Continue usage as normal
 ```
 
+supcommunity-api is a promise based library, which means you can use `.catch`, `.then`, and `await`
+
+------
+
+## Usage
+The `SupcommunityScraper` constructor takes in 1 option - a `proxy`. Please format this using the normal proxy format `ip:port:user:password`.
 ```js
 import SupcommunityScraper from 'supcommunity-api';
 
+const SupcommunityController = new SupcommunityScraper({
+    proxy: 'your-proxy-here'
+});
+```
+
+### Fetch latest week
+The `fetchLatestWeek` method will return the latest droplist URL.
+
+For example:
+```js
+import SupcommunityScraper from 'supcommunity-api';
+
+const SupcommunityController = new SupcommunityScraper();
+
+SupcommunityController.fetchLatestWeek()
+.then(href => console.log(href))
+.catch(err => console.error(err.message));
+```
+
+### Fetch droplist items
+The `fetchDroplistItems` method will return all the items from a drop URL in an array.
+This takes in the `href` parameter, the droplist URL to retrieve from.
+
+For example:
+```js
+import SupcommunityScraper from 'supcommunity-api';
+
+const SupcommunityController = new SupcommunityScraper();
+
 (async () => {
-    const SupcommunityController = new SupcommunityScraper({
-        proxy: 'your-proxy'
-    })
+    const latestWeek = await SupcommunityController.fetchLatestWeek();
+    const droplistItems = await SupcommunityController.fetchDroplistItems(latestWeek);
+
+    console.log(droplistItems);
 })();
+```
+------ 
+
+## License
+
+MIT
