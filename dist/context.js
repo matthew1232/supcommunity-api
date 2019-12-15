@@ -1,7 +1,5 @@
 "use strict";
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
-
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
@@ -15,9 +13,9 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 
-var ProxyAgent = _interopRequireWildcard(require("https-proxy-agent"));
-
 var _utils = require("./utils");
+
+var ProxyAgent = require('https-proxy-agent');
 
 var SharedContext = function () {
   function SharedContext(_ref) {

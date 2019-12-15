@@ -1,7 +1,8 @@
 import fetch from 'node-fetch';
-import * as ProxyAgent from 'https-proxy-agent';
 
 import { formatProxy } from './utils';
+
+const ProxyAgent = require('https-proxy-agent');
 
 class SharedContext {
     constructor({ proxy, headers }){
