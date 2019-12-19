@@ -31,6 +31,7 @@ var SharedContext = function () {
     key: "setProxy",
     value: function setProxy(proxy) {
       this.proxy = proxy;
+      return this;
     }
   }]);
   return SharedContext;

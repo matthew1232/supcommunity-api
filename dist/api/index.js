@@ -122,7 +122,7 @@ var SupcommunityScraper = function () {
               body = _context2.sent;
               $ = _cheerio["default"].load(body);
               droplistArray = [];
-              $('.masonry__item').each(function (i, element) {
+              $('.masonry__item').each(function (_, element) {
                 var category = (0, _utils.capitalizeString)($(element).attr("data-masonry-filter"));
                 if (category === 'Ads') return;
                 var name = $(element).find('.card-details').attr('data-itemname');
