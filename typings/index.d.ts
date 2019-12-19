@@ -17,7 +17,7 @@ declare module 'supcommunity-api' {
 	}
 
 	export class SupcommunityScraper {
-		private constructor({ proxy }: { proxy?: string });
+		public constructor({ proxy }: { proxy?: string });
 		protected _context: SharedContext;
 		public fetchLatestWeek(): Promise<string>;
 		public fetchDroplistItems(url: string): Promise<Item[]>;
