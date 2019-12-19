@@ -3,8 +3,11 @@ import cheerio from 'cheerio';
 import SharedContext from '../context';
 import { checkStatus, capitalizeString } from '../utils';
 
+/**
+ * The main Supreme Commuinity scraper class
+ */
 class SupcommunityScraper {
-    constructor(options={}){
+    constructor(options = {}) {
         const { proxy } = options;
 
         this._context = new SharedContext({
@@ -23,7 +26,11 @@ class SupcommunityScraper {
         });
     }
 
-    async fetchLatestWeek(){
+    /**
+     * Fetches the URL for the latest week on Supreme Community
+     * @returns {string}
+     */
+    async fetchLatestWeek() {
         const { fetch } = this._context;
         const res = await fetch('https://www.supremecommunity.com/season/latest/droplists/', {
             ...this._context,
@@ -37,7 +44,7 @@ class SupcommunityScraper {
 
         const latestWeekPath = $('#box-latest').find('a[class="block"]').attr("href");
 
-        if (latestWeekPath == ""){
+        if (latestWeekPath == "") {
             const error = new Error("No latest week found!");
             error.status = 404;
             error.body = "";
@@ -51,7 +58,12 @@ class SupcommunityScraper {
         return href;
     }
 
-    async fetchDroplistItems(url){
+    /**
+     * Returns the item from the provided droplist URL.
+     * @param {string} url The Supreme Community droplist url
+     * @returns {Item[]}
+     */
+    async fetchDroplistItems(url) {
         const { fetch } = this._context;
         const res = await fetch(url, {
             ...this._context
@@ -63,7 +75,7 @@ class SupcommunityScraper {
         const $ = cheerio.load(body);
         const droplistArray = [];
 
-        $('.masonry__item').each((i, element) => {
+        $('.masonry__item').each((_, element) => {
             const category = capitalizeString($(element).attr("data-masonry-filter"));
 
             if (category === 'Ads') return;
