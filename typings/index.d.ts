@@ -17,7 +17,7 @@ declare module 'supcommunity-api' {
 	}
 
 	export class SupcommunityScraper {
-		public constructor({ proxy }: { proxy?: string });
+		public constructor(config: ScraperConfig);
 		protected _context: SharedContext;
 		public fetchLatestWeek(): Promise<string>;
 		public fetchDroplistItems(url: string): Promise<Item[]>;
@@ -26,6 +26,10 @@ declare module 'supcommunity-api' {
 // #endregion
 
 // #region Typedefs
+
+	export interface ScraperConfig {
+		proxy?: string;
+	}
 
 	export interface Item {
 		name?: string;
