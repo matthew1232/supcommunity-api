@@ -17,7 +17,7 @@ declare module 'supcommunity-api' {
 	}
 
 	export class SupcommunityScraper {
-		public constructor(config: ScraperConfig);
+		public constructor(config?: ScraperConfig);
 		protected _context: SharedContext;
 		public fetchLatestWeek(): Promise<string>;
 		public fetchDroplistItems(url: string): Promise<Item[]>;
