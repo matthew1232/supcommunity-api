@@ -4,15 +4,24 @@ import { formatProxy } from './utils';
 
 const ProxyAgent = require('https-proxy-agent');
 
+/**
+ * The context for each SupcommunityScraper class.
+ */
 class SharedContext {
-    constructor({ proxy, headers }){
+    constructor({ proxy, headers }) {
         this.fetch = fetch;
         this.agent = proxy === undefined ? undefined : new ProxyAgent(formatProxy(proxy));
         this.headers = headers;
     }
 
-    setProxy(proxy){
+    /**
+     * Sets the proxy
+     * @param {string} proxy The proxy to set
+     * @returns {SharedContext}
+     */
+    setProxy(proxy) {
         this.proxy = proxy;
+        return this;
     }
 }
 
