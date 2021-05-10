@@ -16,25 +16,26 @@ var checkStatus = function checkStatus(res) {
       switch (_context.prev = _context.next) {
         case 0:
           status = res.status;
+          console.log(status);
 
           if (!(status !== 200 && status !== 304)) {
-            _context.next = 8;
+            _context.next = 9;
             break;
           }
 
           error = new Error("Invalid status code");
           error.status = status;
-          _context.next = 6;
+          _context.next = 7;
           return _regenerator["default"].awrap(res.text());
 
-        case 6:
+        case 7:
           error.body = _context.sent;
           throw error;
 
-        case 8:
+        case 9:
           ;
 
-        case 9:
+        case 10:
         case "end":
           return _context.stop();
       }

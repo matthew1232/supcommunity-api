@@ -49,7 +49,7 @@ var SupcommunityScraper = function () {
   (0, _createClass2["default"])(SupcommunityScraper, [{
     key: "fetchLatestWeek",
     value: function fetchLatestWeek() {
-      var fetch, res, body, $, latestWeekPath, error, latestWeek, href;
+      var fetch, res, parsedURL, year, currentDate, body, $, latestWeekPath, closestDateDifference, error, latestWeek, href;
       return _regenerator["default"].async(function fetchLatestWeek$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -66,31 +66,57 @@ var SupcommunityScraper = function () {
               return _regenerator["default"].awrap((0, _utils.checkStatus)(res));
 
             case 6:
-              _context.next = 8;
+              parsedURL = res.url.split('/droplists')[0];
+              year = parsedURL.slice(parsedURL.length - 4, parsedURL.length);
+              currentDate = new Date();
+              _context.next = 11;
               return _regenerator["default"].awrap(res.text());
 
-            case 8:
+            case 11:
               body = _context.sent;
               $ = _cheerio["default"].load(body);
-              latestWeekPath = $('#box-latest').find('a[class="block"]').attr("href");
+              latestWeekPath = '', closestDateDifference = Infinity;
+              $('div.week-list').children('div.week-item').each(function () {
+                var dropDateString = $(this).find(".week-item-subtitle").text();
+                console.log({
+                  dropDateString: dropDateString
+                });
+                if (dropDateString == '' || dropDateString == undefined) return;
+                var dayIdentifier;
+                if (dropDateString.includes('th')) dayIdentifier = 'th';else if (dropDateString.includes('nd')) dayIdentifier = 'nd';else if (dropDateString.includes('st')) dayIdentifier = 'st';else {
+                  var err = new Error("Could not parse drop date");
+                  err.status = '404';
+                  throw err;
+                }
+                ;
+                var day = dropDateString.split(dayIdentifier)[0],
+                    month = dropDateString.split(dayIdentifier + ' ')[1].split(' ')[0];
+                var dropDate = new Date(year + "-" + month + "-" + day);
 
-              if (!(latestWeekPath == "")) {
-                _context.next = 16;
+                if (dropDate > currentDate && dropDate - currentDate < closestDateDifference) {
+                  closestDateDifference = dropDate - currentDate;
+                  latestWeekPath = $(this).find('a.week-item__title').attr('href');
+                }
+              });
+
+              if (!(latestWeekPath == undefined || latestWeekPath == "")) {
+                _context.next = 21;
                 break;
               }
 
+              console.log("No new latest week");
               error = new Error("No latest week found!");
               error.status = 404;
               error.body = "";
               throw error;
 
-            case 16:
+            case 21:
               ;
               latestWeek = new URL(latestWeekPath, "https://www.supremecommunity.com");
               href = latestWeek.href;
               return _context.abrupt("return", href);
 
-            case 20:
+            case 25:
             case "end":
               return _context.stop();
           }
@@ -122,22 +148,20 @@ var SupcommunityScraper = function () {
               body = _context2.sent;
               $ = _cheerio["default"].load(body);
               droplistArray = [];
-              $('.masonry__item').each(function (i, element) {
-                var category = (0, _utils.capitalizeString)($(element).attr("data-masonry-filter"));
+              $('.catalog-item').each(function (i, element) {
+                var category = (0, _utils.capitalizeString)($(element).attr("data-category"));
                 if (category === 'Ads') return;
-                var name = $(element).find('.card-details').attr('data-itemname');
-                var imagePath = $(element).find('.prefill-img').attr("src");
-                var price = $(element).find('.label-price').text().trim();
+                var name = $(element).find('.catalog-item__title').text().trim();
+                var imagePath = $(element).find('.catalog-item__thumb > img').attr("src");
+                var price = $(element).find('.catalog-label-price').text().trim();
                 var imageURL = new URL(imagePath, url).href;
                 var positiveVotes = Number($(element).find('.progress-bar-success.droplist-vote-bar').text());
                 var negativeVotes = Number($(element).find('.progress-bar-danger.droplist-vote-bar').text());
                 var votePercentage = Math.round(100 * (positiveVotes / (positiveVotes + negativeVotes)));
-                var description = $(element).find('.prefill-img').attr('alt').split('- ')[1];
                 droplistArray.push({
                   name: name,
                   image: imageURL,
                   price: price,
-                  description: description,
                   positiveVotes: positiveVotes,
                   negativeVotes: negativeVotes,
                   votePercentage: votePercentage

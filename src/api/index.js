@@ -32,12 +32,48 @@ class SupcommunityScraper {
 
         await checkStatus(res);
 
+        const parsedURL = res.url.split('/droplists')[0];
+        const year = parsedURL.slice(parsedURL.length - 4, parsedURL.length);
+        const currentDate = new Date();
+
         const body = await res.text();
         const $ = cheerio.load(body);
 
-        const latestWeekPath = $('#box-latest').find('a[class="block"]').attr("href");
+        let latestWeekPath = '',
+        closestDateDifference = Infinity;
+        
+        $('div.week-list').children('div.week-item').each(function() {
+            const dropDateString = $(this).find(".week-item-subtitle").text();
+            console.log({ dropDateString });
+            
+            if (dropDateString == '' || dropDateString == undefined) return;
 
-        if (latestWeekPath == ""){
+            let dayIdentifier;
+
+            if (dropDateString.includes('th')) dayIdentifier = 'th';
+            else if (dropDateString.includes('nd')) dayIdentifier = 'nd';
+            else if (dropDateString.includes('st')) dayIdentifier = 'st';
+            else {
+                const err = new Error("Could not parse drop date");
+                err.status = '404';
+
+                throw err;
+            };
+
+            const day = dropDateString.split(dayIdentifier)[0],
+            month = dropDateString.split(dayIdentifier + ' ')[1].split(' ')[0];
+
+            const dropDate = new Date(year + "-" + month + "-" + day);
+
+            if (dropDate > currentDate && dropDate - currentDate < closestDateDifference){
+                closestDateDifference = dropDate - currentDate;
+                latestWeekPath = $(this).find('a.week-item__title').attr('href');
+            }
+        });
+
+        if (latestWeekPath == undefined || latestWeekPath == ""){
+            console.log("No new latest week");
+
             const error = new Error("No latest week found!");
             error.status = 404;
             error.body = "";
@@ -63,25 +99,23 @@ class SupcommunityScraper {
         const $ = cheerio.load(body);
         const droplistArray = [];
 
-        $('.masonry__item').each((i, element) => {
-            const category = capitalizeString($(element).attr("data-masonry-filter"));
+        $('.catalog-item').each((i, element) => {
+            const category = capitalizeString($(element).attr("data-category"));
 
             if (category === 'Ads') return;
 
-            const name = $(element).find('.card-details').attr('data-itemname');
-            const imagePath = $(element).find('.prefill-img').attr("src");
-            const price = $(element).find('.label-price').text().trim();
+            const name = $(element).find('.catalog-item__title').text().trim();
+            const imagePath = $(element).find('.catalog-item__thumb > img').attr("src");
+            const price = $(element).find('.catalog-label-price').text().trim();
             const imageURL = new URL(imagePath, url).href;
             const positiveVotes = Number($(element).find('.progress-bar-success.droplist-vote-bar').text());
             const negativeVotes = Number($(element).find('.progress-bar-danger.droplist-vote-bar').text());
             const votePercentage = Math.round(100 * (positiveVotes / (positiveVotes + negativeVotes)));
-            const description = $(element).find('.prefill-img').attr('alt').split('- ')[1];
 
             droplistArray.push({
                 name,
                 image: imageURL,
                 price,
-                description,
                 positiveVotes,
                 negativeVotes,
                 votePercentage

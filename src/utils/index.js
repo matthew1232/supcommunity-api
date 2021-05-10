@@ -1,6 +1,8 @@
 export const checkStatus = async (res) => {
     const { status } = res;
 
+    console.log(status);
+    
     if (status !== 200 && status !== 304){
         const error = new Error("Invalid status code");
         error.status = status;
