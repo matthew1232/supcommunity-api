@@ -152,7 +152,7 @@ var SupcommunityScraper = function () {
                 var category = (0, _utils.capitalizeString)($(element).attr("data-category"));
                 if (category === 'Ads') return;
                 var name = $(element).find('.catalog-item__title').text().trim();
-                var imagePath = $(element).find('.catalog-item__thumb > img').attr("src");
+                var imagePath = $(element).find('.catalog-item__thumb > img').attr("data-src");
                 var price = $(element).find('.catalog-label-price').text().trim();
                 var imageURL = new URL(imagePath, url).href;
                 var positiveVotes = Number($(element).find('.progress-bar-success.droplist-vote-bar').text());

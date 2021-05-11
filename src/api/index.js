@@ -96,6 +96,7 @@ class SupcommunityScraper {
         await checkStatus(res);
 
         const body = await res.text();
+
         const $ = cheerio.load(body);
         const droplistArray = [];
 
@@ -105,7 +106,7 @@ class SupcommunityScraper {
             if (category === 'Ads') return;
 
             const name = $(element).find('.catalog-item__title').text().trim();
-            const imagePath = $(element).find('.catalog-item__thumb > img').attr("src");
+            const imagePath = $(element).find('.catalog-item__thumb > img').attr("data-src");
             const price = $(element).find('.catalog-label-price').text().trim();
             const imageURL = new URL(imagePath, url).href;
             const positiveVotes = Number($(element).find('.progress-bar-success.droplist-vote-bar').text());
