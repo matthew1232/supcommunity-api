@@ -117,6 +117,7 @@ class SupcommunityScraper {
                 name,
                 image: imageURL,
                 price,
+                category,
                 positiveVotes,
                 negativeVotes,
                 votePercentage
