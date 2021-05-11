@@ -162,6 +162,7 @@ var SupcommunityScraper = function () {
                   name: name,
                   image: imageURL,
                   price: price,
+                  category: category,
                   positiveVotes: positiveVotes,
                   negativeVotes: negativeVotes,
                   votePercentage: votePercentage
