@@ -145,12 +145,13 @@ console.log(droplistItems);
 ```js
 [
   {
-    name: String (ex 'Supreme®/SMEG Mini Refrigerator')
-    image: String (ex 'https://www.supremecommunity.com/s/v2/img/scloader.gif'),
-    price: String (ex '$1298'),
-    positiveVotes: Number (ex 2621),
-    negativeVotes: Number (ex 138),
-    votePercentage: Number (ex 95)
+    name: String,
+    image: String,
+    category: String,
+    price: String,
+    positiveVotes: Number,
+    negativeVotes: Number,
+    votePercentage: Number
   }
 ]
 ```
